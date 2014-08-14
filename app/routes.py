@@ -1,10 +1,9 @@
-from tcapp import app
+from app import app
 import os
-from tcapp.forms import SigninForm
+from app.forms import SigninForm
 
-from models import db, Table, initial_db
+from models import db, Account, Player, initial_db
 from flask import render_template, Markup, session, redirect, url_for, request, jsonify, abort
-
 from ConfigParser import ConfigParser
 
 

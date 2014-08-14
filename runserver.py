@@ -1,3 +1,3 @@
-from tcapp import app
+from app import app
 
 app.run(debug=False)
