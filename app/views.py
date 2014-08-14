@@ -23,11 +23,10 @@ def ConfigSectionMap(section):
 
 Config = ConfigParser()
 Config.read("settings.ini")
-cached_time = ""
 
 initial_db()
 
-
+# Read in Configuration variables
 apiURL = ConfigSectionMap("general")['apiurl']
 debug = ConfigSectionMap("general")['debug']
 interface = ConfigSectionMap("general")['interface']
@@ -38,7 +37,7 @@ localAPI = ConfigSectionMap("general")['localapi']
 user = ConfigSectionMap("users")['user']
 password = ConfigSectionMap("users")['password']
 
-
+@app.route('/index')
 @app.route('/')
 def default_display():
     return render_template('index.html')

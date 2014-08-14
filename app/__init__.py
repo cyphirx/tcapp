@@ -11,7 +11,6 @@ lm.init_app(app)
 from models import db
 db.init_app(app)
 
-
-import app.routes
+from app import views
 
 
