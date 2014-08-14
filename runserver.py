@@ -1,3 +1,3 @@
-from generic_flask import app
+from tcapp import app
 
 app.run(debug=False)

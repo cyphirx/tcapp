@@ -8,6 +8,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cache.db'
 from models import db
 db.init_app(app)
 
-import generic_flask.routes
+import tcapp.routes
 
 

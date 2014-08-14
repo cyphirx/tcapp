@@ -1,6 +1,6 @@
-from generic_flask import app
+from tcapp import app
 import os
-from generic_flask.forms import SigninForm
+from tcapp.forms import SigninForm
 
 from models import db, Table, initial_db
 from flask import render_template, Markup, session, redirect, url_for, request, jsonify, abort
@@ -28,25 +28,16 @@ cached_time = ""
 
 initial_db()
 
-if os.path.isfile('settings.ini'):
-    apiURL = ConfigSectionMap("general")['apiurl']
-    debug = ConfigSectionMap("general")['debug']
-    interface = ConfigSectionMap("general")['interface']
-    port = int(os.environ.get("PORT", 5000))
 
-    # stopgap until we can get connected to Auth
-    user = ConfigSectionMap("users")['user']
-    password = ConfigSectionMap("users")['password']
+apiURL = ConfigSectionMap("general")['apiurl']
+debug = ConfigSectionMap("general")['debug']
+interface = ConfigSectionMap("general")['interface']
+port = int(os.environ.get("PORT", 5000))
+localAPI = ConfigSectionMap("general")['localapi']
 
-else:
-    apiURL = os.environ['eve_api_url']
-    debug = os.environ['app_debug']
-    interface = os.environ['app_binding_address']
-    port = int(os.environ.get("PORT", 5000))
-
-    # stopgap until we can get connected to Auth
-    user = os.environ['app_admin_user']
-    password = os.environ['app_admin_password']
+# stopgap until we can get connected to Auth
+user = ConfigSectionMap("users")['user']
+password = ConfigSectionMap("users")['password']
 
 
 @app.route('/')
