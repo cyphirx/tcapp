@@ -1,4 +1,4 @@
-generic_flask
+TC Tracking tool
 =============
 
-This app is the basic setup for applications I have worked on. Should give a decent set of tools to get moving
+This tool is used for management of the TC group.
