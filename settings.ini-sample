@@ -5,6 +5,7 @@ vCode = xxxxxxxxxxxx
 [general]
 apiURL = https://api.eveonline.com
 debug = True
+localURL = http://api.service.com
 interface = 127.0.0.1
 port = 5000
 
