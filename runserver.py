@@ -1,3 +1,3 @@
-from frogsiren import app
+from generic_flask import app
 
 app.run(debug=False)

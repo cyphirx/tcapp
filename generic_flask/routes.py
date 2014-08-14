@@ -1,6 +1,6 @@
-from evepi import app
+from generic_flask import app
 import os
-from evepi.forms import SigninForm
+from generic_flask.forms import SigninForm
 
 from models import db, Table, initial_db
 from flask import render_template, Markup, session, redirect, url_for, request, jsonify, abort

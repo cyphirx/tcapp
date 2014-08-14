@@ -1,5 +1,5 @@
 from werkzeug.contrib.profiler import ProfilerMiddleware
-from frogsiren import app
+from generic_flask import app
 
 app.config['PROFILE'] = True
 app.wsgi_app = ProfilerMiddleware(app.wsgi_app, restrictions=[30])
