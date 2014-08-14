@@ -1,9 +1,9 @@
 from app import app
 import os
-from app.forms import SigninForm
+from app.forms import LoginForm
 
 from models import db, Account, Player, initial_db
-from flask import render_template, Markup, session, redirect, url_for, request, jsonify, abort
+from flask import render_template, Markup, session, redirect, url_for, request, jsonify, abort, flash
 from ConfigParser import ConfigParser
 
 
@@ -43,22 +43,15 @@ def default_display():
     return render_template('index.html')
 
 
-@app.route('/signin', methods=['GET', 'POST'])
-def signin():
-    form = SigninForm()
-
-    if 'email' in session:
-        return redirect(url_for('hello_world'))
-
-    if request.method == 'POST':
-        if form.name.data == user and form.password.data == password:
-            session['email'] = form.name.data
-            return redirect(url_for('default_display'))
-        else:
-            return render_template('signin.html', form=form)
-
-    elif request.method == 'GET':
-        return render_template('signin.html', form=form)
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash('Login requested for Username="' + form.name.data + '", remember_me=' + str(form.remember_me.data))
+        return redirect('/index')
+    return render_template('login.html',
+        title = 'Sign In',
+        form = form)
 
 
 

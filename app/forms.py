@@ -1,12 +1,9 @@
 from flask.ext.wtf import Form
-from wtforms import TextField,validators, PasswordField, SubmitField
+from wtforms import TextField, BooleanField, PasswordField
+from wtforms.validators import Required
 
+class LoginForm(Form):
+  name = TextField("Username",  validators=[Required()])
+  password = PasswordField('Password', validators=[Required("Please enter a password.")])
+  remember_me = BooleanField('remember_me', default = False)
 
-class SigninForm(Form):
-  name = TextField("Username",  [validators.Required("Please enter your email address."), validators.Email("Please enter your email address.")])
-  password = PasswordField('Password', [validators.Required("Please enter a password.")])
-  submit = SubmitField("Sign In")
-  uid = 0
-
-  def __init__(self, *args, **kwargs):
-    Form.__init__(self, *args, **kwargs)

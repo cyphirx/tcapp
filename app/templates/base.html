@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title><Generic Page></title>
+    {% if title %}
+    <title>{{title}} - TC Tracking</title>
+    {% else %}
+    <title>TC Tracking</title>
+    {% endif %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
@@ -26,7 +30,7 @@
                             </ul>
                         </li>
                     {% else %}
-                        <li><a href="{{ url_for('signin') }}">Sign in</a></li>
+                        <li><a href="#">Sign in</a></li>
                     {% endif %}
                 </ul>
 
@@ -34,6 +38,16 @@
         </strong>
     </div>
 </header>
+    <hr>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li>{{ message }} </li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 <div class="container">
     {% block content %}
     {% endblock %}
