@@ -39,8 +39,16 @@ password = ConfigSectionMap("users")['password']
 @app.route('/index')
 @app.route('/')
 @login_required
-def default_display():
-    return render_template('index.html')
+def index():
+    user = g.user
+    return render_template('index.html',
+                           title = 'Home',
+                           user = user )
+
+
+@app.before_request
+def before_request():
+    g.user = current_user
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -55,7 +63,12 @@ def login():
         title = 'Sign In',
         form = form)
 
-@lm.user_load
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+@lm.user_loader
 def load_user(id):
     return Account.query.get(int(id))
 

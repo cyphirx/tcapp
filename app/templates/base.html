@@ -15,8 +15,8 @@
         <strong>
             <nav>
                 <ul class="menu">
-                    <li><a href="{{ url_for('default_display') }}">Home</a></li>
-                    {% if 'email' in session %}
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    {% if g.user.is_authenticated() %}
 
                         <li><a href="#">Top</a></li>
                         <li><a href="#">Top</a>
@@ -29,6 +29,7 @@
                                 <li><a href="">Action</a></li>
                             </ul>
                         </li>
+                        <li><a href="{{  url_for('logout') }}">Logout</a></li>
                     {% else %}
                         <li><a href="#">Sign in</a></li>
                     {% endif %}
@@ -38,7 +39,6 @@
         </strong>
     </div>
 </header>
-    <hr>
     {% with messages = get_flashed_messages() %}
     {% if messages %}
     <ul>
