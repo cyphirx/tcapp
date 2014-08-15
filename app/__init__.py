@@ -1,14 +1,15 @@
 from flask import Flask
 from flask.ext.login import LoginManager
-app = Flask(__name__)
+from flask.ext.sqlalchemy import SQLAlchemy
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cache.db'
+app = Flask(__name__)
 app.config.from_object('config')
+db = SQLAlchemy(app)
 
 lm = LoginManager()
 lm.init_app(app)
+lm.login_view = 'login'
 
-from models import db
 db.init_app(app)
 
-from app import views
+from app import views, models

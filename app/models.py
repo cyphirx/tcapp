@@ -1,43 +1,41 @@
-from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import and_
-from werkzeug.security import generate_password_hash, check_password_hash
-
-
-db = SQLAlchemy()
+from app import db
 
 class Account(db.Model):
-    username = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(25))
     primary_character = db.Column(db.Integer)
-    dateAdded = db.Column(db.Text)
-    dateUpdated = db.Column(db.Text)
+    dateAdded = db.Column(db.Text, nullable=True)
+    dateUpdated = db.Column(db.Text, nullable=True)
+    characters = db.relationship('Player', backref = 'accountid', lazy = 'dynamic')
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+
+    def __repr__(self):
+        return '<User %r>' % (self.username)
 
 
 class Player(db.Model):
     characterID = db.Column(db.Integer, primary_key=True)
-    characterName = db.Column(db.Text)
+    characterName = db.Column(db.String(64))
     corporationID = db.Column(db.Integer)
-    corporationName = db.Column(db.Text)
-    allianceID = db.Column(db.Integer)
-    allianceName = db.Column(db.Text)
-    dateAdded = db.Column(db.Text)
-    dateUpdated = db.Column(db.Text)
+    corporationName = db.Column(db.String(64))
+    allianceID = db.Column(db.Integer, nullable=True)
+    allianceName = db.Column(db.String(64), nullable=True)
+    account = db.Column(db.Integer, db.ForeignKey('account.userid'))
+    dateAdded = db.Column(db.Text, nullable=True)
+    dateUpdated = db.Column(db.Text, nullable=True)
 
+    def __repr(self):
+        return '<Player %r>' % (self.characterName)
 
-
-def initial_db():
-    from flask import Flask
-    from sqlalchemy import exists
-
-    app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cache.db'
-    db.init_app(app)
-    with app.test_request_context():
-        db.create_all(app=app)
-        db.session.commit()
-
-
-if __name__ == "__main__":
-    initial_db()
-    exit(0)
 
 # vim: set ts=4 sw=4 et :

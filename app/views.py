@@ -1,9 +1,10 @@
-from app import app
+from flask import render_template, flash, redirect, session, url_for, request, g
+from flask.ext.login import login_user, logout_user, current_user, login_required
+from app import app, db, lm
 import os
-from app.forms import LoginForm
+from forms import LoginForm
 
-from models import db, Account, Player, initial_db
-from flask import render_template, Markup, session, redirect, url_for, request, jsonify, abort, flash
+from models import db, Account, Player
 from ConfigParser import ConfigParser
 
 
@@ -24,8 +25,6 @@ def ConfigSectionMap(section):
 Config = ConfigParser()
 Config.read("settings.ini")
 
-initial_db()
-
 # Read in Configuration variables
 apiURL = ConfigSectionMap("general")['apiurl']
 debug = ConfigSectionMap("general")['debug']
@@ -39,20 +38,25 @@ password = ConfigSectionMap("users")['password']
 
 @app.route('/index')
 @app.route('/')
+@login_required
 def default_display():
     return render_template('index.html')
 
 
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
+    if g.user is not None and g.user.is_authenticated():
+        return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        flash('Login requested for Username="' + form.name.data + '", remember_me=' + str(form.remember_me.data))
+        session['remember_me'] = form.remember_me.data
         return redirect('/index')
     return render_template('login.html',
         title = 'Sign In',
         form = form)
 
-
+@lm.user_load
+def load_user(id):
+    return Account.query.get(int(id))
 
     # vim: set ts=4 sw=4 et :
