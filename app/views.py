@@ -3,6 +3,7 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from app import app, db, lm
 import os
 from forms import LoginForm
+from hashlib import sha1
 
 from models import db, Account, Player
 from ConfigParser import ConfigParser
@@ -31,6 +32,7 @@ debug = ConfigSectionMap("general")['debug']
 interface = ConfigSectionMap("general")['interface']
 port = int(os.environ.get("PORT", 5000))
 localAPI = ConfigSectionMap("general")['localapi']
+authAPI = ConfigSectionMap("general")['authapi']
 
 # stopgap until we can get connected to Auth
 user = ConfigSectionMap("users")['user']
@@ -57,6 +59,16 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
+        # Generate sha1 hash for TEST lookup
+        m = sha1()
+        m.update(form.password.data)
+        hashed_pass = m.hexdigest()
+        form.password.data = ""
+
+        # Start lookup in auth
+
+        flash('Login requested for OpenID="' + form.name.data + '", remember_me=' + str(form.remember_me.data) + ', pass hash=' + str(hashed_pass))
+
         session['remember_me'] = form.remember_me.data
         return redirect('/index')
     return render_template('login.html',
