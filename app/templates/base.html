@@ -24,11 +24,14 @@
                                 <li><a href="#">Sub</a></li>
                             </ul>
                         </li>
+
+                        {% if session.admin  %}
                         <li><a href="#">Admin</a>
                             <ul class="submenu">
                                 <li><a href="">Action</a></li>
                             </ul>
                         </li>
+                        {% endif %}
                         <li><a href="{{  url_for('logout') }}">Logout</a></li>
                     {% else %}
                         <li><a href="#">Sign in</a></li>

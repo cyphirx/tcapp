@@ -30,7 +30,7 @@ class Player(db.Model):
     corporationName = db.Column(db.String(64))
     allianceID = db.Column(db.Integer, nullable=True)
     allianceName = db.Column(db.String(64), nullable=True)
-    account = db.Column(db.Integer, db.ForeignKey('account.userid'))
+    account = db.Column(db.Integer, db.ForeignKey('account.id'))
     dateAdded = db.Column(db.Text, nullable=True)
     dateUpdated = db.Column(db.Text, nullable=True)
 
