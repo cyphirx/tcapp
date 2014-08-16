@@ -43,14 +43,15 @@ adminID = int(ConfigSectionMap("groups")['adminid'])
 user = ConfigSectionMap("users")['user']
 password = ConfigSectionMap("users")['password']
 
+
 @app.route('/index')
 @app.route('/')
 @login_required
 def index():
     user = g.user
     return render_template('index.html',
-                           title = 'Home',
-                           user = user )
+                           title='Home',
+                           user=user)
 
 
 @app.before_request
@@ -58,7 +59,7 @@ def before_request():
     g.user = current_user
 
 
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if g.user is not None and g.user.is_authenticated():
         return redirect(url_for('index'))
@@ -72,7 +73,7 @@ def login():
 
         # Start lookup in auth
         # Leaving HTTP lookups for now until features are complete enough to hit it one-time only
-        #authURL = authAPI + "/api/1.0/login/?user=" + form.name.data + "&pass=" + hashed_pass
+        # authURL = authAPI + "/api/1.0/login/?user=" + form.name.data + "&pass=" + hashed_pass
         #try:
         #    f = urllib2.urlopen(authURL)
         #except:
@@ -85,7 +86,7 @@ def login():
         # Verify auth was successful
         if data['auth'] != "ok":
             flash("Authentication error, please check username and password and try again.")
-            return render_template('login.html', title = 'Sign In', form = form)
+            return render_template('login.html', title='Sign In', form=form)
 
         # Check for group membership
         member = False
@@ -98,8 +99,7 @@ def login():
 
         if member == False:
             flash('Please apply to authgroup!')
-            return render_template('login.html', title = 'Sign In', form = form)
-
+            return render_template('login.html', title='Sign In', form=form)
 
         id = data['id']
 
@@ -108,7 +108,7 @@ def login():
             # Retrieve account values
             username = data['username']
             primary_id = data['primarycharacter']['id']
-            account = Account(id = id, username = username, primary_character = primary_id)
+            account = Account(id=id, username=username, primary_character=primary_id)
             db.session.add(account)
 
             # Retrieve player values
@@ -122,8 +122,8 @@ def login():
                 if primary_character['alliance']['id']:
                     allianceID = primary_character['alliance']['id']
                     allianceName = primary_character['alliance']['name']
-            player = Player(characterID = primary_id, characterName = characterName, corporationID = corporationID,
-                            corporationName = corporationName, allianceID = allianceID, allianceName = allianceName )
+            player = Player(characterID=primary_id, characterName=characterName, corporationID=corporationID,
+                            corporationName=corporationName, allianceID=allianceID, allianceName=allianceName)
             db.session.add(player)
             db.session.commit()
         else:
@@ -139,13 +139,15 @@ def login():
         return redirect('/index')
 
     return render_template('login.html',
-        title = 'Sign In',
-        form = form)
+                           title='Sign In',
+                           form=form)
+
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 @lm.user_loader
 def load_user(id):
