@@ -1,13 +1,13 @@
 from flask import Flask
 
 app = Flask(__name__)
+import config
 
-app.secret_key = 'development key'
-
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://tcapp:somepassword@zeus/tcapp'
+app.config.from_object('config')
+app.config['SQLALCHEMY_DATABASE_URI'] = config.DB_URI
 
 from tcapp.api import api
+
 
 from models import db
 db.init_app(app)
